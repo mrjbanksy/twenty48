@@ -1,8 +1,8 @@
 package com.jbapps.twenty48;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.app.Dialog;
+import android.content.DialogInterface;
 
 public class LossDialog
     extends Dialog

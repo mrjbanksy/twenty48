@@ -1,21 +1,19 @@
 package com.jbapps.twenty48;
 
-import android.text.method.LinkMovementMethod;
-import android.text.Html;
-import android.content.SharedPreferences;
 import java.util.ArrayList;
-import android.view.Window;
-import android.view.Gravity;
-import android.graphics.Point;
-import android.view.Display;
-import android.support.v4.view.GestureDetectorCompat;
-import android.widget.Toast;
-import android.view.MotionEvent;
-import android.view.GestureDetector;
-import android.widget.TextView;
-import android.os.Bundle;
+
 import android.app.Activity;
-import android.view.Menu;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
+import android.view.GestureDetector;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnLayoutChangeListener;
+import android.widget.GridLayout;
+import android.widget.TextView;
 
 // -------------------------------------------------------------------------
 /**
@@ -47,7 +45,6 @@ public class MainActivity
     private TextView              textView16;
     private TextView              scoreView;
     private TextView              highScoreView;
-    private TextView              ratePlz;
     private Model                 model;
     private Tile[][]              database;
     private static final int      SWIPE_MIN_DISTANCE       = 50;
@@ -63,17 +60,12 @@ public class MainActivity
     {
         super.onCreate(savedInstanceState);
         won = false;
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setTitle("2048");
         setContentView(R.layout.activity_main);
         SharedPreferences data =
             getSharedPreferences("com.jbapps.twenty48", MODE_PRIVATE);
         highScore = data.getInt("highScore", 0);
         model = new Model();
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        width = width / 4;
         textView1 = (TextView)findViewById(R.id.textView1);
         textView2 = (TextView)findViewById(R.id.textView2);
         textView3 = (TextView)findViewById(R.id.textView3);
@@ -92,7 +84,6 @@ public class MainActivity
         textView16 = (TextView)findViewById(R.id.textView16);
         scoreView = (TextView)findViewById(R.id.textView17);
         highScoreView = (TextView)findViewById(R.id.textView18);
-        ratePlz = (TextView)findViewById(R.id.textView19);
         textViews = new ArrayList<TextView>();
         textViews.add(textView1);
         textViews.add(textView2);
@@ -110,20 +101,27 @@ public class MainActivity
         textViews.add(textView14);
         textViews.add(textView15);
         textViews.add(textView16);
-        for (TextView text : textViews)
-        {
-            text.setWidth(width);
-            text.setHeight(width);
-            text.setGravity(Gravity.CENTER);
-        }
         mDetector = new GestureDetectorCompat(this, this);
         mDetector.setOnDoubleTapListener(this);
-        String text =
-            "This app is for a class project. Please take a minute and"
-                + " leave a rating or some feedback <a href=market://details?id=com.jbapps.twenty48>here</a>, as keeping track of"
-                + " that is part of my grade. Thanks!";
-        ratePlz.setText(Html.fromHtml(text));
-        ratePlz.setMovementMethod(LinkMovementMethod.getInstance());
+        GridLayout gridLayout = (GridLayout) findViewById(R.id.gridLayout1);
+        gridLayout.addOnLayoutChangeListener(new OnLayoutChangeListener() {
+			@Override
+			public void onLayoutChange(View view, int arg1, int arg2, int arg3,
+					int arg4, int arg5, int arg6, int arg7, int arg8) {
+				int sideLength;
+				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+					sideLength = view.getWidth() / 4;
+				} else {
+					sideLength = view.getHeight() / 4;
+				}
+				for (TextView text : textViews)
+		        {
+		            text.setWidth(sideLength);
+		            text.setHeight(sideLength);
+		            text.setGravity(Gravity.CENTER);
+		        }
+			}
+		});
         update();
     }
 

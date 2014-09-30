@@ -1,6 +1,5 @@
 package com.jbapps.twenty48;
 
-import android.graphics.Color;
 import java.util.Random;
 
 // -------------------------------------------------------------------------
@@ -15,7 +14,6 @@ public class Model
     private Tile[][] database;
     private int      totalCount;
     private int      score;
-    private boolean  won = false;
 
 
     // ----------------------------------------------------------

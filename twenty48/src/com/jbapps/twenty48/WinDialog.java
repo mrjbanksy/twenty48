@@ -1,9 +1,8 @@
 package com.jbapps.twenty48;
 
-import android.content.DialogInterface;
 import android.app.AlertDialog;
-import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 
 public class WinDialog
     extends Dialog
